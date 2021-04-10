@@ -10,7 +10,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.george.movieapp.MoviesApplication
-import com.george.movieapp.models.now_playing.NowPlayingResponse
+import com.george.movieapp.models.now_playing.MoviesResponse
 import com.george.movieapp.repositories.MoviesRepository
 import com.george.movieapp.utiles.Resource
 import kotlinx.coroutines.launch
@@ -22,51 +22,57 @@ class MoviesViewModel(
     val repo: MoviesRepository
 ) : AndroidViewModel(app) {
 
-    /**
-     * # Now Playing Movies
-     * */
-    var nowPlayingMovies : MutableLiveData<Resource<NowPlayingResponse>> = MutableLiveData()
+
+    var moviesMovies : MutableLiveData<Resource<MoviesResponse>> = MutableLiveData()
     var nowPlayingPage = 1
-    var nowPlayingResponse : NowPlayingResponse? = null
+    var moviesResponse : MoviesResponse? = null
+
+    val topRatedMovies : MutableLiveData<Resource<MoviesResponse>> = MutableLiveData()
+    var topRatedPage = 1
+    var topRatedResponse : MoviesResponse? = null
 
     init {
         getNowPlayingMovies("ar")
+        getTopRatedMovies("ar")
     }
 
+    /**
+     * # Now Playing Movies
+     * */
     fun getNowPlayingMovies(countryCode: String) = viewModelScope.launch {
         safeNowPlayingMovies(countryCode)
     }
 
-    private fun handleNowPlayingMoviesResponse(response: Response<NowPlayingResponse>): Resource<NowPlayingResponse> {
+    private fun handleNowPlayingMoviesResponse(response: Response<MoviesResponse>): Resource<MoviesResponse> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
                 nowPlayingPage++
-                if (nowPlayingResponse == null) {
-                    nowPlayingResponse = resultResponse
+                if (moviesResponse == null) {
+                    moviesResponse = resultResponse
                 } else {
-                    val oldMovies = nowPlayingResponse?.results
+                    val oldMovies = moviesResponse?.results
                     val newMovies = resultResponse.results
                     oldMovies?.addAll(newMovies)
                 }
-                return Resource.Success(nowPlayingResponse ?: resultResponse)
+                return Resource.Success(moviesResponse ?: resultResponse)
             }
         }
         return Resource.Error(response.message())
     }
 
     private suspend fun safeNowPlayingMovies(countryCode: String) {
-        nowPlayingMovies.postValue(Resource.Loading())
+        moviesMovies.postValue(Resource.Loading())
         try {
             if (hasInternetConnection()) {
                 val response = repo.getNowPlayingMovies(countryCode, nowPlayingPage)
-                nowPlayingMovies.postValue(handleNowPlayingMoviesResponse(response))
+                moviesMovies.postValue(handleNowPlayingMoviesResponse(response))
             } else {
-                nowPlayingMovies.postValue(Resource.Error("No Internet Connection"))
+                moviesMovies.postValue(Resource.Error("No Internet Connection"))
             }
         } catch (t: Throwable) {
             when (t) {
-                is IOException -> nowPlayingMovies.postValue(Resource.Error("Network Failure"))
-                else -> nowPlayingMovies.postValue(Resource.Error("Conversion Error"))
+                is IOException -> moviesMovies.postValue(Resource.Error("Network Failure"))
+                else -> moviesMovies.postValue(Resource.Error("Conversion Error"))
             }
         }
     }
@@ -75,18 +81,50 @@ class MoviesViewModel(
     /**
      * # Top Rated Movies
      * */
-    val topRatedMovies : MutableLiveData<Resource<NowPlayingResponse>> = MutableLiveData()
-    var topRatedPage = 1
-    var topRatedResponse : NowPlayingResponse? = null
+    fun getTopRatedMovies(countryCode: String) = viewModelScope.launch {
+        safeTopRatedMovies(countryCode)
+    }
 
+    private fun handleTopRatedResponse(response: Response<MoviesResponse>): Resource<MoviesResponse> {
+        if (response.isSuccessful) {
+            response.body()?.let { resultResponse ->
+                topRatedPage++
+                if (topRatedResponse == null) {
+                    topRatedResponse = resultResponse
+                } else {
+                    val oldMovies = topRatedResponse?.results
+                    val newMovies = resultResponse.results
+                    oldMovies?.addAll(newMovies)
+                }
+                return Resource.Success(topRatedResponse ?: resultResponse)
+            }
+        }
+        return Resource.Error(response.message())
+    }
 
+    private suspend fun safeTopRatedMovies(countryCode: String) {
+        topRatedMovies.postValue(Resource.Loading())
+        try {
+            if (hasInternetConnection()) {
+                val response = repo.getTopRatedMovies(countryCode, topRatedPage)
+                topRatedMovies.postValue(handleTopRatedResponse(response))
+            } else {
+                topRatedMovies.postValue(Resource.Error("No Internet Connection"))
+            }
+        } catch (t: Throwable) {
+            when (t) {
+                is IOException -> topRatedMovies.postValue(Resource.Error("Network Failure"))
+                else -> topRatedMovies.postValue(Resource.Error("Conversion Error"))
+            }
+        }
+    }
 
     /**
      * # Search For Movies
      * */
-    val searchMovies : MutableLiveData<Resource<NowPlayingResponse>> = MutableLiveData()
+    val searchMovies : MutableLiveData<Resource<MoviesResponse>> = MutableLiveData()
     var searchPage = 1
-    var searchResponse : NowPlayingResponse? = null
+    var searchResponse : MoviesResponse? = null
 
 
 

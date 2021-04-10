@@ -2,6 +2,7 @@ package com.george.movieapp.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.george.movieapp.R
@@ -53,6 +54,10 @@ class MoviesActivity : AppCompatActivity() {
                         R.id.fragment_search_in_movie -> {
                             navHostFragment.findNavController().navigate(R.id.searchInMoviesFragment)
                             tvPageTitle.text = resources.getString(R.string.search)
+                        }
+                        R.id.fragment_favorite -> {
+                            /*navHostFragment.findNavController().navigate(R.id.searchInMoviesFragment)*/
+                            tvPageTitle.text = resources.getString(R.string.favorite)
                         }
                     }
                 }

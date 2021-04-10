@@ -1,12 +1,15 @@
 package com.george.movieapp.dp
 
 import android.content.Context
+import com.george.movieapp.models.now_playing.Result
 import androidx.room.*
+
 @Database(
     entities = [Result::class],
     exportSchema = false,
     version = 1
 )
+@TypeConverters(MovieTypeConverters::class)
 abstract class MovieDatabase : RoomDatabase() {
 
     abstract fun getMoviesDao() : MoviesDao

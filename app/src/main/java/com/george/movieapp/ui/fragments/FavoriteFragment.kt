@@ -6,12 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.george.movieapp.R
+import com.george.movieapp.databinding.FragmentFavoriteBinding
 import com.george.movieapp.databinding.FragmentMovieDetailsBinding
-import com.george.movieapp.ui.MoviesActivity
 
-class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
 
-    private var _binding : FragmentMovieDetailsBinding? = null
+class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
+
+    private var _binding : FragmentFavoriteBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -19,7 +20,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentMovieDetailsBinding.inflate(layoutInflater,container,false)
+        _binding = FragmentFavoriteBinding.inflate(layoutInflater,container,false)
         return binding.root
     }
 
@@ -35,5 +36,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
 
     private fun setListener() {
         // logic here
+
     }
+
 }

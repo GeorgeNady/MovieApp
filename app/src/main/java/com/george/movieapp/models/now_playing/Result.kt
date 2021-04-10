@@ -3,13 +3,14 @@ package com.george.movieapp.models.now_playing
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
 import java.io.Serializable
 
 @Entity(tableName = "movies")
+@TypeConverters
 data class Result(
-    @PrimaryKey
-    @ColumnInfo(name = "id")
-    val id: Int,
+    @PrimaryKey(autoGenerate = false)
+    val id: Int? = null,
     val adult: Boolean,
     val backdrop_path: String,
     val genre_ids: List<Int>,

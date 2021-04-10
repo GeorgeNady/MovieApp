@@ -1,13 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/primaryBackgroundColor"
     tools:context=".ui.fragments.TopRatedMoviesFragment">
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
+    <!-- lets try some ting new -->
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/topRatedViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:clipToPadding="false"
+        android:paddingTop="@dimen/_10sdp"
+        android:paddingBottom="?attr/actionBarSize" />
+
+    <!--<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/srlTopRated"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -27,7 +43,7 @@
             app:recyclerview_overscroll_animation_size="1"
             app:recyclerview_stiffness="STIFFNESS_LOW" />
 
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>-->
 
 
-</LinearLayout>
+</RelativeLayout>

@@ -24,7 +24,7 @@ class NowPlayingMoviesFragment : Fragment(R.layout.fragment_now_playing_movies) 
     private var _binding : FragmentNowPlayingMoviesBinding? = null
     private val binding get() = _binding!!
     lateinit var viewModel: MoviesViewModel
-    lateinit var nowPlayingAdapter : NowPlayingAdapter
+    private lateinit var nowPlayingAdapter : NowPlayingAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,7 +50,28 @@ class NowPlayingMoviesFragment : Fragment(R.layout.fragment_now_playing_movies) 
         // logic here
         viewModel = (activity as MoviesActivity).viewModel
 
-        viewModel.nowPlayingMovies.observe(viewLifecycleOwner, Observer { response ->
+        nowPlayingMoviesObserve()
+
+        nowPlayingAdapter.setOnItemClickListener {
+            val bundle = Bundle().apply {
+                putSerializable("article",it)
+            }
+            findNavController().navigate(
+                R.id.action_nowPlayingMoviesFragment_to_movieDetailsFragment,
+                bundle
+            )
+        }
+
+        binding.srlNowPlating.setOnRefreshListener {
+            viewModel.nowPlayingPage = 1
+            viewModel.getNowPlayingMovies("ar")
+            binding.srlNowPlating.isRefreshing = false
+        }
+
+    }
+
+    private fun nowPlayingMoviesObserve() {
+        viewModel.moviesMovies.observe(viewLifecycleOwner, Observer { response ->
             when(response) {
                 is Resource.Success -> {
                     hideProgressBar()
@@ -74,28 +95,17 @@ class NowPlayingMoviesFragment : Fragment(R.layout.fragment_now_playing_movies) 
                 }
             }
         })
-
-        nowPlayingAdapter.setOnItemClickListener {
-            val bundle = Bundle().apply {
-                putSerializable("article",it)
-            }
-            findNavController().navigate(
-                R.id.action_nowPlayingMoviesFragment_to_movieDetailsFragment,
-                bundle
-            )
-        }
     }
-
 
     private fun hideProgressBar() {
-        // TODO : show progress par
         binding.progressBar.visibility = View.INVISIBLE
         isLoading = false
+        binding.srlNowPlating.isRefreshing = false
     }
     private fun showProgressBar() {
-        // TODO : show progress par
         binding.progressBar.visibility = View.VISIBLE
         isLastPage = true
+        binding.srlNowPlating.isRefreshing = true
     }
 
     var isLoading = false

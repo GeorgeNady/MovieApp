@@ -9,18 +9,18 @@
     tools:context=".ui.MoviesActivity">
 
     <androidx.fragment.app.FragmentContainerView
-        android:paddingTop="@dimen/_65sdp"
-        android:clipToPadding="false"
         android:id="@+id/navHostFragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:clipToPadding="false"
         app:defaultNavHost="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tobAppBar"
+        app:layout_constraintVertical_bias="0.0"
         app:navGraph="@navigation/nav_graph" />
 
     <RelativeLayout
@@ -86,7 +86,7 @@
 
 
     <eightbitlab.com.blurview.BlurView
-        android:id="@+id/blur_view_bottom"
+        android:id="@+id/blurViewBottom"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:layout_alignParentStart="true"

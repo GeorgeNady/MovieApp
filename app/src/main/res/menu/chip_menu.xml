@@ -12,6 +12,11 @@
         android:icon="@drawable/ic_top_rated" />
 
     <item
+        android:id="@+id/fragment_favorite"
+        android:title="@string/favorite"
+        android:icon="@drawable/ic_favorite" />
+
+    <item
         android:id="@+id/fragment_search_in_movie"
         android:title="@string/search"
         android:icon="@drawable/ic_search" />

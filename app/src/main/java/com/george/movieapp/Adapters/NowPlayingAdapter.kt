@@ -10,12 +10,12 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.george.movieapp.R
 import com.george.movieapp.models.now_playing.*
-import com.george.movieapp.databinding.ItemMovieBinding
+import com.george.movieapp.databinding.ItemMovieRvBinding
 import com.george.movieapp.utiles.Constants.BASE_IMAGE_URL
 
 class NowPlayingAdapter:RecyclerView.Adapter<NowPlayingAdapter.NowPlatingViewHolder>() {
 
-    inner class NowPlatingViewHolder (val binding : ItemMovieBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class NowPlatingViewHolder (val binding : ItemMovieRvBinding) : RecyclerView.ViewHolder(binding.root)
 
     private val differCallBack = object : DiffUtil.ItemCallback<Result>() {
 
@@ -37,7 +37,7 @@ class NowPlayingAdapter:RecyclerView.Adapter<NowPlayingAdapter.NowPlatingViewHol
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         NowPlatingViewHolder(
-            ItemMovieBinding.inflate(
+            ItemMovieRvBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false

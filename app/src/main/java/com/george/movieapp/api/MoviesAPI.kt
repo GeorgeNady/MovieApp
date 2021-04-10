@@ -1,6 +1,6 @@
 package com.george.movieapp.api
 
-import com.george.movieapp.models.now_playing.NowPlayingResponse
+import com.george.movieapp.models.now_playing.MoviesResponse
 import com.george.movieapp.utiles.Constants.API_KEY
 import retrofit2.Response
 import retrofit2.http.GET
@@ -28,7 +28,7 @@ interface MoviesAPI {
         @Query("api_key") apiKey: String = API_KEY,
         @Query("language") countryCode: String? = "ar",
         @Query("page") page: Int = 1
-    ) : Response<NowPlayingResponse>
+    ) : Response<MoviesResponse>
 
     /**
      * # GET : movie/top_rated
@@ -47,7 +47,7 @@ interface MoviesAPI {
         @Query("api_key") apiKey: String = API_KEY,
         @Query("language") countryCode: String? = "ar",
         @Query("page") page: Int = 1
-    ) /*: Response<???>*/
+    ) : Response<MoviesResponse>
 
     /**
      * # GET : search/movie
