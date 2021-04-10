@@ -1,6 +1,8 @@
 package com.george.movieapp.repositories
 
 import com.george.movieapp.api.RetrofitInstance
+import com.george.movieapp.dp.MovieDatabase
+import com.george.movieapp.models.now_playing.Result
 
 
 /**
@@ -8,7 +10,7 @@ import com.george.movieapp.api.RetrofitInstance
  * ### get the data form our Database and our remote data source from retrofit from our api
  *  */
 class MoviesRepository(
-    /*val db: MovieDatabase*/
+    private val db: MovieDatabase
 ) {
 
     /**
@@ -25,12 +27,10 @@ class MoviesRepository(
     ) = RetrofitInstance.api.getTopRatedMovies(countryCode = language, page = page)
 
     suspend fun searchForMovies(
-        language: String? = "ar",
         query: String,
         page: Int = 1,
         includeAdult: Boolean = true,
     ) = RetrofitInstance.api.searchForMovies(
-        countryCode = language,
         query = query,
         page = page,
         includeAdult = includeAdult,
@@ -39,6 +39,10 @@ class MoviesRepository(
     /**
      * # Database
      * */
+    suspend fun saveMovie(movie:Result) = db.getMoviesDao().upsertMovie(movie)
 
+    suspend fun delete(movie:Result) = db.getMoviesDao().deleteMovie(movie)
+
+    fun getFavoriteMovies() = db.getMoviesDao().getAllMovies()
 
 }

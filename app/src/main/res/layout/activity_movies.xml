@@ -15,6 +15,7 @@
         android:layout_height="0dp"
         android:clipToPadding="false"
         app:defaultNavHost="true"
+        android:alpha="0"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -26,16 +27,12 @@
     <RelativeLayout
         android:id="@+id/tobAppBar"
         android:layout_width="0dp"
+        android:scaleY="0"
+        android:alpha="0"
         android:layout_height="@dimen/_65sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
-        <eightbitlab.com.blurview.BlurView
-            android:id="@+id/blurViewTop"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true" />
 
         <LinearLayout
             android:id="@+id/linearLayout"
@@ -47,12 +44,19 @@
             android:layout_centerInParent="true">
 
             <ImageView
+                android:translationY="-100dp"
+                android:alpha="0"
+                android:id="@+id/tvAppIcon"
                 android:layout_width="@dimen/_35sdp"
                 android:layout_height="@dimen/_35sdp"
-                android:src="@drawable/movie_app_icon" />
+                android:src="@drawable/movie_app_icon"
+                android:contentDescription="@string/app_name" />
 
             <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvAppName"
                 style="@style/h1_bold"
+                android:translationY="-100dp"
+                android:alpha="0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/movie" />
@@ -62,6 +66,8 @@
                 android:layout_weight="1" />
 
             <com.google.android.material.textview.MaterialTextView
+                android:translationX="200dp"
+                android:alpha="0"
                 android:id="@+id/tvPageTitle"
                 style="@style/h1_normal_colored"
                 android:layout_width="wrap_content"
@@ -74,6 +80,7 @@
         </LinearLayout>
 
         <View
+            android:alpha="0.5"
             android:background="@color/primaryTextColor"
             android:id="@+id/view"
             android:layout_width="match_parent"
@@ -88,6 +95,8 @@
     <eightbitlab.com.blurview.BlurView
         android:id="@+id/blurViewBottom"
         android:layout_width="match_parent"
+        android:scaleY="0"
+        android:alpha="0"
         android:layout_height="?actionBarSize"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"

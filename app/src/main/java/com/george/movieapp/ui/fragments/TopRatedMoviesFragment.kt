@@ -1,6 +1,7 @@
 package com.george.movieapp.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,22 +12,28 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.george.movieapp.Adapters.NowPlayingAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.george.movieapp.Adapters.TopRatedAdapter
 import com.george.movieapp.R
 import com.george.movieapp.databinding.FragmentTopRatedMoviesBinding
 import com.george.movieapp.ui.MoviesActivity
 import com.george.movieapp.ui.MoviesViewModel
 import com.george.movieapp.utiles.Constants
+import com.george.movieapp.utiles.DepthPageTransformer
 import com.george.movieapp.utiles.Resource
+import com.google.android.material.snackbar.Snackbar
 
 
 class TopRatedMoviesFragment : Fragment(R.layout.fragment_top_rated_movies) {
 
-    private var _binding : FragmentTopRatedMoviesBinding? = null
+    private var _binding: FragmentTopRatedMoviesBinding? = null
     private val binding get() = _binding!!
+
+    companion object const
+
+    val TAG = "TopRatedMoviesFragment"
     lateinit var viewModel: MoviesViewModel
-    private lateinit var topRatedAdapter : TopRatedAdapter
+    private lateinit var topRatedAdapter: TopRatedAdapter
     private val mActivity = MoviesActivity()
 
 
@@ -35,7 +42,7 @@ class TopRatedMoviesFragment : Fragment(R.layout.fragment_top_rated_movies) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentTopRatedMoviesBinding.inflate(layoutInflater,container,false)
+        _binding = FragmentTopRatedMoviesBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
@@ -58,10 +65,10 @@ class TopRatedMoviesFragment : Fragment(R.layout.fragment_top_rated_movies) {
 
         topRatedAdapter.setOnItemClickListener {
             val bundle = Bundle().apply {
-                putSerializable("article",it)
+                putSerializable("movie", it)
             }
             findNavController().navigate(
-                R.id.action_topRatedMoviesFragment_to_movieDetailsFragment,
+                R.id.to_movieDetails_destination,
                 bundle
             )
         }
@@ -70,28 +77,34 @@ class TopRatedMoviesFragment : Fragment(R.layout.fragment_top_rated_movies) {
 
     private fun topRatedMoviesObserve() {
         viewModel.moviesMovies.observe(viewLifecycleOwner, Observer { response ->
-           when(response) {
-               is Resource.Success -> {
-                   hideProgressBar()
-                   response.data?.let { topRatedResponse ->
-                       topRatedAdapter.differ.submitList(topRatedResponse.results.toList())
-                       val totalPages = topRatedResponse.total_results / Constants.QUERY_PAGE_SIZE + 2
-                       isLastPage = viewModel.topRatedPage == totalPages
-                       if (isLastPage) {
-                           TODO("logic here")
-                       }
-                   }
-               }
-               is Resource.Error -> {
-                   hideProgressBar()
-                   response.message?.let { message ->
-                       Toast.makeText(activity,"An Error occurred: $message", Toast.LENGTH_LONG).show()
-                   }
-               }
-               is Resource.Loading -> {
-                   showProgressBar()
-               }
-           }
+            when (response) {
+                is Resource.Success -> {
+                    hideProgressBar()
+                    response.data?.let { topRatedResponse ->
+                        if (topRatedResponse.results.size < 1) binding.ivNotFound.visibility = View.VISIBLE
+                        topRatedAdapter.differ.submitList(topRatedResponse.results.toList())
+                        val totalPages =
+                            topRatedResponse.total_results / Constants.QUERY_PAGE_SIZE + 2
+                        isLastPage = viewModel.topRatedPage == totalPages
+                        if (isLastPage) {
+                            Snackbar.make(requireView().rootView,"End of Result",Snackbar.LENGTH_LONG)
+                                .setAnchorView(binding.v)
+                                .show()
+                        }
+                    }
+                }
+                is Resource.Error -> {
+                    hideProgressBar()
+                    response.message?.let { message ->
+                        Snackbar.make(requireView().rootView,"An Error occurred: $message",Snackbar.LENGTH_LONG)
+                            .setAnchorView(binding.v)
+                            .show()
+                    }
+                }
+                is Resource.Loading -> {
+                    showProgressBar()
+                }
+            }
         })
     }
 
@@ -99,6 +112,7 @@ class TopRatedMoviesFragment : Fragment(R.layout.fragment_top_rated_movies) {
         binding.progressBar.visibility = View.INVISIBLE
         isLoading = false
     }
+
     private fun showProgressBar() {
         binding.progressBar.visibility = View.VISIBLE
         isLastPage = true
@@ -110,6 +124,8 @@ class TopRatedMoviesFragment : Fragment(R.layout.fragment_top_rated_movies) {
 
     /**
      * # RecyclerView [scrollListener] [scrollListener] for Pagination
+     * ### User it if we want to display the remote data source into a Recycler View !
+     * ### *to perform a pagination for our list*
      * */
     private val scrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -124,10 +140,11 @@ class TopRatedMoviesFragment : Fragment(R.layout.fragment_top_rated_movies) {
             val isAtLastItem = firstVisibleItemPosition + visibleItemCount >= totalItemCount
             val isNotAtTheBeginning = firstVisibleItemPosition >= 0
             val isTotalMoreThanVisible = totalItemCount >= Constants.QUERY_PAGE_SIZE
-            val shouldPaginate = isNotLoadingAndNotLastPage && isAtLastItem && isNotAtTheBeginning &&
-                    isTotalMoreThanVisible && isScrolling
+            val shouldPaginate =
+                isNotLoadingAndNotLastPage && isAtLastItem && isNotAtTheBeginning &&
+                        isTotalMoreThanVisible && isScrolling
 
-            if(shouldPaginate) {
+            if (shouldPaginate) {
                 viewModel.getNowPlayingMovies("eg")
                 isScrolling = false
             }
@@ -142,11 +159,32 @@ class TopRatedMoviesFragment : Fragment(R.layout.fragment_top_rated_movies) {
         }
     }
 
+
+    var lastItemIndex = 19
+
+    private val changeListener = object : ViewPager2.OnPageChangeCallback() {
+        override fun onPageSelected(position: Int) {
+            if (position == lastItemIndex) {
+                Log.d(TAG, position.toString())
+                viewModel.getTopRatedMovies("ar")
+                lastItemIndex += 20
+                Log.d(TAG, lastItemIndex.toString())
+            } else Log.d(TAG, "${position.toString()} not last page")
+            super.onPageSelected(position)
+        }
+    }
+
     private fun setupRecyclerView() {
         topRatedAdapter = TopRatedAdapter()
         binding.topRatedViewPager.apply {
             adapter = topRatedAdapter
-            /*addOnScrollListener(this@TopRatedMoviesFragment.scrollListener)*/
+            setPageTransformer(DepthPageTransformer())
+            registerOnPageChangeCallback(changeListener)
+            // orientation = ViewPager2.ORIENTATION_VERTICAL
+            beginFakeDrag()
+            fakeDragBy(-2f)
+            endFakeDrag()
+
         }
     }
 }

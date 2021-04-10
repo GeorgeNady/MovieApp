@@ -13,6 +13,15 @@
         android:layout_centerInParent="true"
         android:visibility="gone" />
 
+    <ImageView
+        android:id="@+id/ivNotFound"
+        android:layout_width="@dimen/_150sdp"
+        android:layout_height="@dimen/_150sdp"
+        android:layout_centerInParent="true"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/not_found"
+        android:visibility="gone" />
+
     <!-- lets try some ting new -->
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/topRatedViewPager"
@@ -23,27 +32,11 @@
         android:paddingTop="@dimen/_10sdp"
         android:paddingBottom="?attr/actionBarSize" />
 
-    <!--<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/srlTopRated"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <com.factor.bouncy.BouncyRecyclerView
-            android:id="@+id/rvTopRated"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:orientation="vertical"
-            android:paddingTop="@dimen/_10sdp"
-            android:paddingBottom="?attr/actionBarSize"
-            app:allow_drag_reorder="true"
-            app:allow_item_swipe="true"
-            app:recyclerview_damping_ratio="DAMPING_RATIO_LOW_BOUNCY"
-            app:recyclerview_fling_animation_size="1"
-            app:recyclerview_overscroll_animation_size="1"
-            app:recyclerview_stiffness="STIFFNESS_LOW" />
-
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>-->
-
+    <View
+        android:id="@+id/v"
+        android:layout_width="0dp"
+        android:layout_height="?actionBarSize"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

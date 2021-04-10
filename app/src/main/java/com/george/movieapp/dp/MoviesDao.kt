@@ -13,7 +13,7 @@ interface MoviesDao {
     @Delete
     suspend fun deleteMovie(movie: Result)
 
-    @Query("SELECT * FROM movies;")
+    @Query("SELECT * FROM movies")
     fun getAllMovies(): LiveData<List<Result>>
 
 }

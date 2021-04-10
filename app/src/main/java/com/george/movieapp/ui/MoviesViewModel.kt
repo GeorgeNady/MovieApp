@@ -11,6 +11,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.george.movieapp.MoviesApplication
 import com.george.movieapp.models.now_playing.MoviesResponse
+import com.george.movieapp.models.now_playing.Result
 import com.george.movieapp.repositories.MoviesRepository
 import com.george.movieapp.utiles.Resource
 import kotlinx.coroutines.launch
@@ -21,7 +22,6 @@ class MoviesViewModel(
     app: Application,
     val repo: MoviesRepository
 ) : AndroidViewModel(app) {
-
 
     var moviesMovies : MutableLiveData<Resource<MoviesResponse>> = MutableLiveData()
     var nowPlayingPage = 1
@@ -35,6 +35,10 @@ class MoviesViewModel(
         getNowPlayingMovies("ar")
         getTopRatedMovies("ar")
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////// NETWORK HANDLING SECTION ///////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * # Now Playing Movies
@@ -125,8 +129,45 @@ class MoviesViewModel(
     val searchMovies : MutableLiveData<Resource<MoviesResponse>> = MutableLiveData()
     var searchPage = 1
     var searchResponse : MoviesResponse? = null
+    var isAdult = true
 
+    fun searchForNews(query: String) = viewModelScope.launch {
+        safeSearchForMovies(query)
+    }
 
+    private fun handleSearchForMoviesResponse(response: Response<MoviesResponse>): Resource<MoviesResponse> {
+        if (response.isSuccessful) {
+            response.body()?.let { resultResponse ->
+                searchPage++
+                if (searchResponse == null) {
+                    searchResponse = resultResponse
+                } else {
+                    val oldMovies = searchResponse?.results
+                    val newMovies = resultResponse.results
+                    oldMovies?.addAll(newMovies)
+                }
+                return Resource.Success(searchResponse ?: resultResponse)
+            }
+        }
+        return Resource.Error(response.message())
+    }
+
+    private suspend fun safeSearchForMovies(query: String) {
+        searchMovies.postValue(Resource.Loading())
+        try {
+            if (hasInternetConnection()) {
+                val response = repo.searchForMovies(query,searchPage,isAdult)
+                searchMovies.postValue(handleSearchForMoviesResponse(response))
+            } else {
+                searchMovies.postValue(Resource.Error("No Internet Connection"))
+            }
+        } catch (t: Throwable) {
+            when (t) {
+                is IOException -> searchMovies.postValue(Resource.Error("Network Failure"))
+                else -> searchMovies.postValue(Resource.Error("Conversion Error"))
+            }
+        }
+    }
 
     /**
      * # Checking Internet Connection
@@ -158,5 +199,19 @@ class MoviesViewModel(
         }
         return false
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////// DATABASE HANDLING SECTION ///////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    fun saveMovie(movie:Result) = viewModelScope.launch {
+        repo.saveMovie(movie)
+    }
+
+    fun deleteMovie(movie: Result) = viewModelScope.launch {
+        repo.delete(movie)
+    }
+
+    fun getFavoriteMovies() = repo.getFavoriteMovies()
+
 
 }

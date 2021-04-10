@@ -1,5 +1,6 @@
 package com.george.movieapp.ui.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -18,6 +19,7 @@ import com.george.movieapp.ui.MoviesActivity
 import com.george.movieapp.ui.MoviesViewModel
 import com.george.movieapp.utiles.Constants.QUERY_PAGE_SIZE
 import com.george.movieapp.utiles.Resource
+import com.google.android.material.snackbar.Snackbar
 
 class NowPlayingMoviesFragment : Fragment(R.layout.fragment_now_playing_movies) {
 
@@ -54,10 +56,10 @@ class NowPlayingMoviesFragment : Fragment(R.layout.fragment_now_playing_movies) 
 
         nowPlayingAdapter.setOnItemClickListener {
             val bundle = Bundle().apply {
-                putSerializable("article",it)
+                putSerializable("movie",it)
             }
             findNavController().navigate(
-                R.id.action_nowPlayingMoviesFragment_to_movieDetailsFragment,
+                R.id.to_movieDetails_destination,
                 bundle
             )
         }
@@ -70,24 +72,30 @@ class NowPlayingMoviesFragment : Fragment(R.layout.fragment_now_playing_movies) 
 
     }
 
+    @SuppressLint("ShowToast")
     private fun nowPlayingMoviesObserve() {
         viewModel.moviesMovies.observe(viewLifecycleOwner, Observer { response ->
             when(response) {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { nowPlayingResponse ->
+                        if (nowPlayingResponse.results.size < 1) binding.ivNotFound.visibility = View.VISIBLE
                         nowPlayingAdapter.differ.submitList(nowPlayingResponse.results.toList())
                         val totalPages = nowPlayingResponse.total_results / QUERY_PAGE_SIZE + 2
                         isLastPage = viewModel.nowPlayingPage == totalPages
                         if (isLastPage) {
-                            TODO("logic here")
+                            Snackbar.make(binding.root,"End of Result",Snackbar.LENGTH_LONG)
+                                .setAnchorView(binding.v)
+                                .show()
                         }
                     }
                 }
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                        Toast.makeText(activity,"An Error occurred: $message",Toast.LENGTH_LONG).show()
+                        Snackbar.make(binding.root,"An Error occurred: $message",Snackbar.LENGTH_LONG)
+                            .setAnchorView(binding.v)
+                            .show()
                     }
                 }
                 is Resource.Loading -> {
@@ -132,7 +140,7 @@ class NowPlayingMoviesFragment : Fragment(R.layout.fragment_now_playing_movies) 
                     isTotalMoreThanVisible && isScrolling
 
             if(shouldPaginate) {
-                viewModel.getNowPlayingMovies("eg")
+                viewModel.getNowPlayingMovies("ar")
                 isScrolling = false
             }
 

@@ -65,13 +65,12 @@ interface MoviesAPI {
      * Search for movies.
      */
     @Headers("Accept: application/json", "Content-Type:  application/json;charset=utf-8")
-    @GET("/3/movie/top_rated")
+    @GET("/3/search/movie")
     suspend fun searchForMovies(
         @Query("api_key") apiKey: String = API_KEY,
-        @Query("language") countryCode: String? = "ar",
         @Query("query") query: String,
         @Query("page") page: Int = 1,
         @Query("include_adult") includeAdult: Boolean = true
-    ) /*: Response<???>*/
+    ) : Response<MoviesResponse>
 
 }

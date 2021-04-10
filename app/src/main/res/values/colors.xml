@@ -9,8 +9,13 @@
     <color name="secondaryDarkColor">#c5280c</color>
 
     <color name="primaryTextColor">#ffffff</color>
+    <color name="primaryHintColor">#80FFFFFF</color>
     <color name="secondaryTextColor">#000000</color>
 
     <color name="primaryBackgroundColor">#222</color>
     <color name="yellow">#fed136</color>
+
+    <color name="magenta">#d136fe </color>
+    <color name="lime_green">#36fe6d  </color>
+
 </resources>

@@ -11,7 +11,7 @@
         android:label="fragment_now_playing_movies"
         tools:layout="@layout/fragment_now_playing_movies">
         <action
-            android:id="@+id/action_nowPlayingMoviesFragment_to_movieDetailsFragment"
+            android:id="@+id/to_movieDetails_destination"
             app:destination="@id/movieDetailsFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
@@ -24,7 +24,20 @@
         android:label="fragment_top_rated_movies"
         tools:layout="@layout/fragment_top_rated_movies">
         <action
-            android:id="@+id/action_topRatedMoviesFragment_to_movieDetailsFragment"
+            android:id="@+id/to_movieDetails_destination"
+            app:destination="@id/movieDetailsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slid_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/favoriteFragment"
+        android:name="com.george.movieapp.ui.fragments.FavoriteFragment"
+        android:label="fragment_favorite"
+        tools:layout="@layout/fragment_favorite">
+        <action
+            android:id="@+id/to_movieDetails_destination"
             app:destination="@id/movieDetailsFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
@@ -37,7 +50,7 @@
         android:label="fragment_search_in_movies"
         tools:layout="@layout/fragment_search_in_movies">
         <action
-            android:id="@+id/action_searchInMoviesFragment_to_movieDetailsFragment"
+            android:id="@+id/to_movieDetails_destination"
             app:destination="@id/movieDetailsFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
@@ -49,5 +62,9 @@
         android:id="@+id/movieDetailsFragment"
         android:name="com.george.movieapp.ui.fragments.MovieDetailsFragment"
         android:label="fragment_movie_details"
-        tools:layout="@layout/fragment_movie_details" />
+        tools:layout="@layout/fragment_movie_details">
+        <argument
+            android:name="movie"
+            app:argType="com.george.movieapp.models.now_playing.Result" />
+    </fragment>
 </navigation>
