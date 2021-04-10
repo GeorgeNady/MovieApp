@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ************************************************************************* TextView -->
+    <!-- ******************************************************** h1 -->
+    <style name="h1_normal" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textSize">@dimen/_18sdp</item>
+        <item name="android:textColor">@color/primaryTextColor</item>
+    </style>
+    <style name="h1_normal_colored" parent="h1_normal">
+        <item name="android:textColor">@color/secondaryLightColor</item>
+    </style>
+    <style name="h1_bold" parent="h1_normal">
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="h1_bold_colored" parent="h1_bold">
+        <item name="android:textColor">@color/secondaryLightColor</item>
+    </style>
+
+    <!-- ******************************************************** h2 -->
+    <style name="h2_normal" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textSize">@dimen/_16sdp</item>
+        <item name="android:textColor">@color/primaryTextColor</item>
+    </style>
+    <style name="h2_normal_colored" parent="h2_normal">
+        <item name="android:textColor">@color/secondaryLightColor</item>
+    </style>
+    <style name="h2_bold" parent="h2_normal">
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="h2_bold_colored" parent="h2_bold">
+        <item name="android:textColor">@color/secondaryLightColor</item>
+    </style>
+
+
+    <!-- ******************************************************** h3 -->
+    <style name="h3_normal" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textSize">@dimen/_14sdp</item>
+        <item name="android:textColor">@color/primaryTextColor</item>
+    </style>
+    <style name="h3_normal_colored" parent="h3_normal">
+        <item name="android:textColor">@color/secondaryLightColor</item>
+    </style>
+    <style name="h3_bold" parent="h3_normal">
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="h3_bold_colored" parent="h3_bold">
+        <item name="android:textColor">@color/secondaryLightColor</item>
+    </style>
+
+    <!-- ******************************************************** p -->
+    <style name="p_normal" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textSize">@dimen/_12sdp</item>
+        <item name="android:textColor">@color/primaryTextColor</item>
+    </style>
+    <style name="p_normal_colored" parent="p_normal">
+        <item name="android:textColor">@color/secondaryLightColor</item>
+    </style>
+    <style name="p_bold" parent="p_normal">
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="p_bold_colored" parent="p_bold">
+        <item name="android:textColor">@color/secondaryLightColor</item>
+    </style>
+</resources>

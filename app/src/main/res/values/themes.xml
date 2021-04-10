@@ -1,0 +1,26 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="MovieApp" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryVariant">@color/primaryDarkColor</item>
+        <item name="colorOnPrimary">@color/primaryTextColor</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/secondaryLightColor</item>
+        <item name="colorSecondaryVariant">@color/secondaryDarkColor</item>
+        <item name="colorOnSecondary">@color/secondaryTextColor</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">@color/primaryBackgroundColor</item>
+        <item name="android:navigationBarColor" tools:targetApi="l">@color/primaryBackgroundColor</item>
+        <item name="android:windowBackground" tools:targetApi="l">@color/primaryBackgroundColor</item>
+        <!-- Customize your theme here. -->
+    </style>
+
+    <!-- ************************************************************************* splash screen -->
+    <style name="splash_screen_theme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/primaryBackgroundColor</item>
+        <item name="android:navigationBarColor" tools:targetApi="l">@color/primaryBackgroundColor</item>
+    </style>
+
+</resources>
