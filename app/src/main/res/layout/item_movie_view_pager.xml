@@ -59,36 +59,45 @@
                     tools:text="title" />
             </LinearLayout>
 
-            <LinearLayout
-                android:background="@drawable/bg_5"
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:paddingTop="@dimen/_15sdp"
                 android:layout_height="wrap_content"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#26FF5E39"
+                android:layout_margin="@dimen/_10sdp"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tvMovieTitle"
-                    style="@style/h1_bold"
-                    android:layout_width="match_parent"
+                app:cardCornerRadius="@dimen/_10sdp">
+                <LinearLayout
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/_15sdp"
-                    android:gravity="center"
-                    android:layout_marginBottom="@dimen/_10sdp"
-                    tools:text="Movie Title" />
-
-                <TextView
-                    android:id="@+id/tvMoveOverview"
-                    style="@style/p_normal"
+                    android:background="@drawable/bg_5"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/_15sdp"
-                    android:layout_marginBottom="@dimen/_25sdp"
-                    android:gravity="center"
-                    tools:text="this is the paragraph of the content of the movie description" />
-            </LinearLayout>
+                    android:paddingTop="@dimen/_15sdp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvMovieTitle"
+                        style="@style/h1_bold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_15sdp"
+                        android:gravity="center"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        tools:text="Movie Title" />
+
+                    <TextView
+                        android:id="@+id/tvMoveOverview"
+                        style="@style/p_normal"
+                        android:justificationMode="inter_word"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_15sdp"
+                        android:layout_marginBottom="@dimen/_25sdp"
+                        android:gravity="center"
+                        tools:text="this is the paragraph of the content of the movie description" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
         </RelativeLayout>
 

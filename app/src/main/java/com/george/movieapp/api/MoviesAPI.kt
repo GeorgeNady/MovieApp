@@ -2,6 +2,8 @@ package com.george.movieapp.api
 
 import com.george.movieapp.models.now_playing.MoviesResponse
 import com.george.movieapp.utiles.Constants.API_KEY
+import com.george.movieapp.utiles.Constants.QUERY_LANGUAGE
+import com.george.movieapp.utiles.Constants.QUERY_REGION
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Headers
@@ -26,7 +28,7 @@ interface MoviesAPI {
     @GET("/3/movie/now_playing")
     suspend fun getNowPlayingMovies(
         @Query("api_key") apiKey: String = API_KEY,
-        @Query("language") countryCode: String? = "ar",
+        @Query("language") countryCode: String? = QUERY_LANGUAGE,
         @Query("page") page: Int = 1
     ) : Response<MoviesResponse>
 
@@ -45,7 +47,7 @@ interface MoviesAPI {
     @GET("/3/movie/top_rated")
     suspend fun getTopRatedMovies(
         @Query("api_key") apiKey: String = API_KEY,
-        @Query("language") countryCode: String? = "ar",
+        @Query("language") countryCode: String? = QUERY_LANGUAGE,
         @Query("page") page: Int = 1
     ) : Response<MoviesResponse>
 

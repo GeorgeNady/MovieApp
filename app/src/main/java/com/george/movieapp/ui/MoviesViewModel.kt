@@ -32,8 +32,8 @@ class MoviesViewModel(
     var topRatedResponse : MoviesResponse? = null
 
     init {
-        getNowPlayingMovies("ar")
-        getTopRatedMovies("ar")
+        getNowPlayingMovies()
+        getTopRatedMovies()
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -43,8 +43,8 @@ class MoviesViewModel(
     /**
      * # Now Playing Movies
      * */
-    fun getNowPlayingMovies(countryCode: String) = viewModelScope.launch {
-        safeNowPlayingMovies(countryCode)
+    fun getNowPlayingMovies() = viewModelScope.launch {
+        safeNowPlayingMovies()
     }
 
     private fun handleNowPlayingMoviesResponse(response: Response<MoviesResponse>): Resource<MoviesResponse> {
@@ -64,11 +64,11 @@ class MoviesViewModel(
         return Resource.Error(response.message())
     }
 
-    private suspend fun safeNowPlayingMovies(countryCode: String) {
+    private suspend fun safeNowPlayingMovies() {
         moviesMovies.postValue(Resource.Loading())
         try {
             if (hasInternetConnection()) {
-                val response = repo.getNowPlayingMovies(countryCode, nowPlayingPage)
+                val response = repo.getNowPlayingMovies(nowPlayingPage)
                 moviesMovies.postValue(handleNowPlayingMoviesResponse(response))
             } else {
                 moviesMovies.postValue(Resource.Error("No Internet Connection"))
@@ -85,8 +85,8 @@ class MoviesViewModel(
     /**
      * # Top Rated Movies
      * */
-    fun getTopRatedMovies(countryCode: String) = viewModelScope.launch {
-        safeTopRatedMovies(countryCode)
+    fun getTopRatedMovies() = viewModelScope.launch {
+        safeTopRatedMovies()
     }
 
     private fun handleTopRatedResponse(response: Response<MoviesResponse>): Resource<MoviesResponse> {
@@ -106,11 +106,11 @@ class MoviesViewModel(
         return Resource.Error(response.message())
     }
 
-    private suspend fun safeTopRatedMovies(countryCode: String) {
+    private suspend fun safeTopRatedMovies() {
         topRatedMovies.postValue(Resource.Loading())
         try {
             if (hasInternetConnection()) {
-                val response = repo.getTopRatedMovies(countryCode, topRatedPage)
+                val response = repo.getTopRatedMovies(topRatedPage)
                 topRatedMovies.postValue(handleTopRatedResponse(response))
             } else {
                 topRatedMovies.postValue(Resource.Error("No Internet Connection"))

@@ -17,14 +17,12 @@ class MoviesRepository(
      * # Network
      * */
     suspend fun getNowPlayingMovies(
-        language: String? = "ar",
-        page: Int = 1,
-    ) = RetrofitInstance.api.getNowPlayingMovies(countryCode = language, page = page)
+        page: Int = 1
+    ) = RetrofitInstance.api.getNowPlayingMovies(page = page)
 
     suspend fun getTopRatedMovies(
-        language: String? = "ar",
         page: Int = 1,
-    ) = RetrofitInstance.api.getTopRatedMovies(countryCode = language, page = page)
+    ) = RetrofitInstance.api.getTopRatedMovies(page = page)
 
     suspend fun searchForMovies(
         query: String,

@@ -28,8 +28,7 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="@dimen/_100sdp"
                 android:layout_height="match_parent"
-                android:layout_marginVertical="@dimen/_10sdp"
-                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_margin="@dimen/_10sdp"
                 app:cardBackgroundColor="#26FF9166"
                 app:cardCornerRadius="@dimen/_15sdp"
                 app:cardElevation="0dp">
@@ -72,7 +71,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:alpha=".05"
-                    android:contentDescription="TODO"
+                    android:contentDescription="@string/app_name"
                     android:src="@drawable/movie_app_icon" />
 
                 <LinearLayout

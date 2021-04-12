@@ -1,5 +1,6 @@
 package com.george.movieapp.ui.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -7,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,13 +29,9 @@ class TopRatedMoviesFragment : Fragment(R.layout.fragment_top_rated_movies) {
     private var _binding: FragmentTopRatedMoviesBinding? = null
     private val binding get() = _binding!!
 
-    companion object const
-
-    val TAG = "TopRatedMoviesFragment"
+    companion object const private val TAG = "TopRatedMoviesFragment"
     lateinit var viewModel: MoviesViewModel
     private lateinit var topRatedAdapter: TopRatedAdapter
-    private val mActivity = MoviesActivity()
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -75,8 +71,9 @@ class TopRatedMoviesFragment : Fragment(R.layout.fragment_top_rated_movies) {
 
     }
 
+    @SuppressLint("ShowToast")
     private fun topRatedMoviesObserve() {
-        viewModel.moviesMovies.observe(viewLifecycleOwner, Observer { response ->
+        viewModel.topRatedMovies.observe(viewLifecycleOwner, { response ->
             when (response) {
                 is Resource.Success -> {
                     hideProgressBar()
@@ -118,47 +115,9 @@ class TopRatedMoviesFragment : Fragment(R.layout.fragment_top_rated_movies) {
         isLastPage = true
     }
 
-    var isLoading = false
-    var isLastPage = false
+    private var isLoading = false
+    private var isLastPage = false
     var isScrolling = false
-
-    /**
-     * # RecyclerView [scrollListener] [scrollListener] for Pagination
-     * ### User it if we want to display the remote data source into a Recycler View !
-     * ### *to perform a pagination for our list*
-     * */
-    private val scrollListener = object : RecyclerView.OnScrollListener() {
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            super.onScrolled(recyclerView, dx, dy)
-
-            val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-            val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
-            val visibleItemCount = layoutManager.childCount
-            val totalItemCount = layoutManager.itemCount
-
-            val isNotLoadingAndNotLastPage = !isLoading && !isLastPage
-            val isAtLastItem = firstVisibleItemPosition + visibleItemCount >= totalItemCount
-            val isNotAtTheBeginning = firstVisibleItemPosition >= 0
-            val isTotalMoreThanVisible = totalItemCount >= Constants.QUERY_PAGE_SIZE
-            val shouldPaginate =
-                isNotLoadingAndNotLastPage && isAtLastItem && isNotAtTheBeginning &&
-                        isTotalMoreThanVisible && isScrolling
-
-            if (shouldPaginate) {
-                viewModel.getNowPlayingMovies("eg")
-                isScrolling = false
-            }
-
-        }
-
-        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-            super.onScrollStateChanged(recyclerView, newState)
-            if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
-                isScrolling = true
-            }
-        }
-    }
-
 
     var lastItemIndex = 19
 
@@ -166,10 +125,10 @@ class TopRatedMoviesFragment : Fragment(R.layout.fragment_top_rated_movies) {
         override fun onPageSelected(position: Int) {
             if (position == lastItemIndex) {
                 Log.d(TAG, position.toString())
-                viewModel.getTopRatedMovies("ar")
+                viewModel.getTopRatedMovies()
                 lastItemIndex += 20
                 Log.d(TAG, lastItemIndex.toString())
-            } else Log.d(TAG, "${position.toString()} not last page")
+            } else Log.d(TAG, "$position not last page")
             super.onPageSelected(position)
         }
     }

@@ -66,7 +66,7 @@ class NowPlayingMoviesFragment : Fragment(R.layout.fragment_now_playing_movies) 
 
         binding.srlNowPlating.setOnRefreshListener {
             viewModel.nowPlayingPage = 1
-            viewModel.getNowPlayingMovies("ar")
+            viewModel.getNowPlayingMovies()
             binding.srlNowPlating.isRefreshing = false
         }
 
@@ -140,7 +140,7 @@ class NowPlayingMoviesFragment : Fragment(R.layout.fragment_now_playing_movies) 
                     isTotalMoreThanVisible && isScrolling
 
             if(shouldPaginate) {
-                viewModel.getNowPlayingMovies("ar")
+                viewModel.getNowPlayingMovies()
                 isScrolling = false
             }
 

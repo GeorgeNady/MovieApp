@@ -77,7 +77,7 @@ class SearchInMoviesFragment : Fragment(R.layout.fragment_search_in_movies) {
 
         binding.srlSearch.setOnRefreshListener {
             viewModel.nowPlayingPage = 1
-            viewModel.getNowPlayingMovies("ar")
+            viewModel.getNowPlayingMovies()
             binding.srlSearch.isRefreshing = false
         }
 
@@ -154,7 +154,7 @@ class SearchInMoviesFragment : Fragment(R.layout.fragment_search_in_movies) {
                     isTotalMoreThanVisible && isScrolling
 
             if(shouldPaginate) {
-                viewModel.getNowPlayingMovies("ar")
+                viewModel.getNowPlayingMovies()
                 isScrolling = false
             }
 
